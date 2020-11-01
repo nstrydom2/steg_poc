@@ -16,13 +16,14 @@ namespace steg_poc
         [Ignore("Ignore sanity test")]
         public void SanityTest()
         {
-            //Assert.True(false, "Sanity test, this test must fail ;D");
+            Assert.True(true, "Sanity test, this test must fail ;D");
         }
 
         [Test]
+        //[Ignore("Ignore test")]
         public void EncodeProducesOutputFile()
         {
-            using (FileStream fsSource = new FileStream(@"program.jpg", 
+            using (FileStream fsSource = new FileStream(@"/home/ghost/Projects/steg_poc/steg_poc/program.jpg", 
                 FileMode.Open, FileAccess.Read))
             {
                 Stega stega = new Stega();
@@ -30,23 +31,25 @@ namespace steg_poc
 
                 fsSource.Read(fileBytes, 0, fileBytes.Length);
                 fsSource.Close();
-                stega.EncodeImage(fileBytes, new string[] { @"testpic.png", @"testpic1.png" });
+                stega.EncodeImage(fileBytes, new string[] {
+                    @"/home/ghost/Projects/steg_poc/steg_poc/testpic.png",
+                       @"/home/ghost/Projects/steg_poc/steg_poc/testpic1.png" });
 
                 // When
-                Assert.True(File.Exists(@"output_0.png"));
-                Assert.True(File.Exists(@"output_1.png"));
+                Assert.True(File.Exists(@"/home/ghost/Projects/steg_poc/steg_poc/output_0.png"));
+                Assert.True(File.Exists(@"/home/ghost/Projects/steg_poc/steg_poc/output_1.png"));
             }
         }
 
         [Test]
-        //[Ignore("Disable for test")]
+        //[Ignore("Ignore test")]
         public void SHA1FileChecksum()
         {
             // Given
             string inputFileHash = String.Empty;
             string outputFileHash = String.Empty;
 
-            using (FileStream fileStream = new FileStream(@"program.jpg", FileMode.Open))
+            using (FileStream fileStream = new FileStream(@"/home/ghost/Projects/steg_poc/steg_poc/program.jpg", FileMode.Open))
             using (BufferedStream buffStream = new BufferedStream(fileStream))
             {
                 using (SHA1Managed sha1 = new SHA1Managed())
@@ -68,7 +71,9 @@ namespace steg_poc
                 {
                     // Given
                     Stega stega = new Stega();
-                    byte[] imageFileBytes = stega.DecodeImage(new string[] { @"output_0.png", @"output_1.png" });
+                    byte[] imageFileBytes = stega.DecodeImage(new string[] {
+                    @"/home/ghost/Projects/steg_poc/steg_poc/output_0.png",
+                    @"/home/ghost/Projects/steg_poc/steg_poc/output_1.png" });
                     File.WriteAllBytes("testees.jpg", imageFileBytes);
                     byte[] hash = sha1.ComputeHash(imageFileBytes);
 
